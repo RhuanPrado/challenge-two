@@ -1,0 +1,36 @@
+body {margin: 0}
+
+
+div > span {display: inline-block}
+
+.grid{
+  display: grid;
+}
+
+.grid-row {
+	display: grid;
+	grid-auto-flow: row;
+}
+
+.grid-columns {
+	display: grid;
+	grid-auto-flow: column;
+}
+
+.center-items{
+  align-items: center;
+	justify-items: center;
+}
+
+.form-div{
+  padding-top: 50px;
+  padding-left: 200px;
+  padding-right: 200px;
+}
+
+.tablesPatients{
+  padding-top: 50px;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
