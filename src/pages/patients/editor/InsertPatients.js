@@ -1,15 +1,18 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+//import components
 import { Alert, Button, Collapse, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import IconButton from '@mui/material/IconButton';
-import axios from "axios";
-import moment from "moment-jalaali";
-import {brazilianStates} from '../../../utils/generalUtils'
-import React, { useEffect, useState } from "react";
-import CloseIcon from '@mui/icons-material/Close';
 import NavPatients from "../NavPatients";
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
+//auxiliar files
+import { brazilianStates } from '../../../utils/generalUtils'
+import moment from "moment-jalaali";
 
 export default function InsertPatients() {
 	const [name, setName] = useState("");
@@ -25,8 +28,8 @@ export default function InsertPatients() {
 	moment.locale('pt-br')
 
 	const handleChange = (newValue) => {
-        if(newValue != null && newValue != undefined)
-		    setBirth(newValue._d.getTime());
+		if (newValue != null && newValue != undefined)
+			setBirth(newValue._d.getTime());
 	};
 
 	const getId = () => {
@@ -34,7 +37,7 @@ export default function InsertPatients() {
 			method: "GET",
 			url: "https://951irjuwo2.execute-api.us-east-1.amazonaws.com/patients",
 		}).then((response) => {
-			
+
 			let idMax = 0
 			if (response.data.Items.length != 0) {
 				response.data.Items.map((item, index) => {
@@ -119,69 +122,69 @@ export default function InsertPatients() {
 			</Collapse>
 			<form onSubmit={e => insertPatient(e)} className="grid center-items">
 				<div className="form-div">
-						<TextField
+					<TextField
+						disabled={register}
+						style={{ marginBottom: 10, marginLeft: 10, marginRight: 10 }}
+						required
+						id="outlined-required"
+						label="Nome"
+						value={name}
+						onChange={(e) => setName(e.target.value.toString())}
+					/>
+					<TextField
+						style={{ marginBottom: 10, marginLeft: 10, marginRight: 20 }}
+						disabled={register}
+						required
+						id="outlined-required"
+						label="E-Mail"
+						value={email}
+						onChange={(e) => setEmail(e.target.value.toString())}
+					/>
+
+					<LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')} >
+						<DatePicker
+							openTo="year"
+							views={['year', 'month', 'day']}
 							disabled={register}
-							style={{ marginBottom: 10 , marginLeft:10 , marginRight: 10 }}
-							required
-							id="outlined-required"
-							label="Nome"
-							value={name}
-							onChange={(e) => setName(e.target.value.toString())}
+							label="Data de Nascimento"
+							value={new moment(birth)}
+							onChange={handleChange}
+							renderInput={(params) => <TextField {...params} />}
 						/>
-						<TextField
-							style={{ marginBottom: 10 , marginLeft:10 ,marginRight: 20 }}
-							disabled={register}
-							required
-							id="outlined-required"
-							label="E-Mail"
-							value={email}
-							onChange={(e) => setEmail(e.target.value.toString())}
-						/>
-					
-						<LocalizationProvider  dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')} >
-							<DatePicker
-								openTo="year"
-								views={['year', 'month', 'day']}
-								disabled={register}
-								label="Data de Nascimento"
-								value={new moment(birth)}
-								onChange={handleChange}
-								renderInput={(params) => <TextField {...params} />}
-							/>
-						</LocalizationProvider>
+					</LocalizationProvider>
 
 
 
-						<TextField
-							disabled={register}
-							style={{ margin: 10 }}
-							required
-							id="outlined-required"
-							label="Endereço"
-							value={street}
-							onChange={(e) => setStreet(e.target.value.toString())}
-						/>
+					<TextField
+						disabled={register}
+						style={{ margin: 10 }}
+						required
+						id="outlined-required"
+						label="Endereço"
+						value={street}
+						onChange={(e) => setStreet(e.target.value.toString())}
+					/>
 
-						<TextField
-							disabled={register}
-							style={{ margin: 10 }}
-							required
-							id="outlined-required"
-							label="Número"
-							value={number}
-							onChange={(e) => setNumber(e.target.value.toString())}
-						/>
+					<TextField
+						disabled={register}
+						style={{ margin: 10 }}
+						required
+						id="outlined-required"
+						label="Número"
+						value={number}
+						onChange={(e) => setNumber(e.target.value.toString())}
+					/>
 
 
-						<TextField
-							disabled={register}
-							style={{ margin: 10 }}
-							required
-							id="outlined-required"
-							label="Cidade"
-							value={city}
-							onChange={(e) => setCity(e.target.value.toString())}
-						/>
+					<TextField
+						disabled={register}
+						style={{ margin: 10 }}
+						required
+						id="outlined-required"
+						label="Cidade"
+						value={city}
+						onChange={(e) => setCity(e.target.value.toString())}
+					/>
 					<FormControl fullWidth style={{ margin: 10 }}>
 						<InputLabel id="select-label">Estado</InputLabel>
 						<Select
@@ -190,15 +193,15 @@ export default function InsertPatients() {
 							id="select"
 							value={state}
 							label="Estado"
-							onChange={(e)=> setState(e.target.value.toString())}
+							onChange={(e) => setState(e.target.value.toString())}
 						>
-							{brazilianStates.map((item,index)=>{
-								return(
+							{brazilianStates.map((item, index) => {
+								return (
 									<MenuItem key={index} value={item.value}>{item.label}</MenuItem>
 								)
 							})}
 						</Select>
-					</FormControl>	
+					</FormControl>
 
 
 					<TextField
@@ -214,7 +217,7 @@ export default function InsertPatients() {
 
 
 					<Button disabled={register} variant="contained" type="submit"> Cadastrar </Button>
-				</div>	
+				</div>
 			</form>
 
 		</>

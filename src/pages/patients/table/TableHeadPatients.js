@@ -1,6 +1,8 @@
-import { TableCell, TableHead, TableRow } from "@mui/material";
 import React from "react"
+//import components
+import { TableCell, TableHead, TableRow } from "@mui/material";
 
+//Head values columns
 const variations = [
     "Ações",
     "Nome",
@@ -9,12 +11,12 @@ const variations = [
     "Endereço"
 ]
 
-export default function TableHeadPatients(){
-    return(
+export default function TableHeadPatients() {
+    return (
         <TableHead>
             <TableRow>
-                {variations.map((variation, index)=>{
-                    return(<TableCell key={index}><b>{variation}</b></TableCell>)
+                {variations.map((variation, index) => {
+                    return (<TableCell key={index}><b>{variation}</b></TableCell>)
                 })}
             </TableRow>
         </TableHead>

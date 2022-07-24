@@ -16,10 +16,9 @@ export default function App() {
 	return (
 		<Router history={history}>
 			<Switch>
-				<Route exact path="/" component={Patients}/>
-				<Route exact path="/insert" component={InsertPatients}/>
-				<Route exact path="/alter/:id" component={AlterPatients}/>
-
+				<Route exact path="/" component={Patients} />
+				<Route exact path="/insert" component={InsertPatients} />
+				<Route exact path="/alter/:id" component={AlterPatients} />
 			</Switch>
 		</Router>
 	);

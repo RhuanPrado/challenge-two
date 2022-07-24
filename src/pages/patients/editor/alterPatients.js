@@ -1,33 +1,40 @@
-import { Alert, Button, Collapse, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+
+//import components
+import { Alert, Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import IconButton from '@mui/material/IconButton';
-import axios from "axios";
-import moment from "moment";
-import {brazilianStates} from '../../../utils/generalUtils'
-import React, { useEffect, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import NavPatients from "../NavPatients";
-import { useHistory } from "react-router-dom";
+import IconButton from '@mui/material/IconButton';
+
+//auxiliar file
+import { brazilianStates } from '../../../utils/generalUtils'
+import moment from "moment";
 
 export default function AlterPatients(props) {
+
+	//data struct patient
+	const [id, setId] = useState(0);
 	const [name, setName] = useState("");
 	const [email, setEmail] = useState("");
 	const [birth, setBirth] = useState(moment.now());
-	const [id, setId] = useState(0);
 	const [street, setStreet] = useState("");
 	const [number, setNumber] = useState("");
 	const [complement, setComplement] = useState("");
 	const [city, setCity] = useState("");
 	const [state, setState] = useState("");
+
 	const [register, setRegister] = useState(false)
-    const history = useHistory();
+	const history = useHistory();
 
 	const handleChange = (newValue) => {
-        
-        if(newValue != null && newValue != undefined)
-		    setBirth(newValue._d.getTime());
+
+		if (newValue != null && newValue != undefined)
+			setBirth(newValue._d.getTime());
 	};
 
 	const getId = (id) => {
@@ -35,7 +42,7 @@ export default function AlterPatients(props) {
 			method: "GET",
 			url: `https://951irjuwo2.execute-api.us-east-1.amazonaws.com/patients/${id}`,
 		}).then((response) => {
-            setId(response.data.Item.id)
+			setId(response.data.Item.id)
 			setName(response.data.Item.name)
 			setBirth(response.data.Item.birth)
 			setEmail(response.data.Item.email)
@@ -48,28 +55,28 @@ export default function AlterPatients(props) {
 	}
 
 	const insertPatient = () => {
-        axios({
-            method: "POST",
-            url: "https://951irjuwo2.execute-api.us-east-1.amazonaws.com/patients",
-            data: {
-                id,
-                name,
-                birth,
-                email,
-                address: {
-                    street,
-                    number,
-                    complement,
-                    city,
-                    state
-                }
-            }
-        }).then(() => {
-            setRegister(true)
+		axios({
+			method: "POST",
+			url: "https://951irjuwo2.execute-api.us-east-1.amazonaws.com/patients",
+			data: {
+				id,
+				name,
+				birth,
+				email,
+				address: {
+					street,
+					number,
+					complement,
+					city,
+					state
+				}
+			}
+		}).then(() => {
+			setRegister(true)
 
-        }).catch((error) => {
-            console.error(error)
-        })
+		}).catch((error) => {
+			console.error(error)
+		})
 
 	}
 
@@ -87,7 +94,7 @@ export default function AlterPatients(props) {
 			setComplement("")
 			setStreet("")
 			setState("")
-            history.push("/")
+			history.push("/")
 		}
 	}, [register])
 
@@ -96,84 +103,84 @@ export default function AlterPatients(props) {
 		<>
 			<NavPatients />
 
-				<Alert severity="warning"
-					action={
-						<IconButton
-							aria-label="close"
-							color="inherit"
-							size="small"
-							onClick={() => {
-								setRegister(false);
-							}}
-						>
-							<CloseIcon fontSize="inherit" />
-						</IconButton>
-					}
+			<Alert severity="warning"
+				action={
+					<IconButton
+						aria-label="close"
+						color="inherit"
+						size="small"
+						onClick={() => {
+							setRegister(false);
+						}}
+					>
+						<CloseIcon fontSize="inherit" />
+					</IconButton>
+				}
 
-				>Alterando Paciente</Alert>
+			>Alterando Paciente</Alert>
 			<FormControl className="grid center-items">
 				<div className="form-div">
-						<TextField
+					<TextField
+						disabled={register}
+						style={{ marginBottom: 10, marginLeft: 10, marginRight: 10 }}
+						required
+						id="outlined-required"
+						label="Nome"
+						value={name}
+						onChange={(e) => setName(e.target.value.toString())}
+					/>
+					<TextField
+						style={{ marginBottom: 10, marginLeft: 10, marginRight: 20 }}
+						disabled={register}
+						required
+						id="outlined-required"
+						label="E-Mail"
+						value={email}
+						onChange={(e) => setEmail(e.target.value.toString())}
+					/>
+
+					<LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')} >
+						<DatePicker
 							disabled={register}
-							style={{ marginBottom: 10 , marginLeft:10 , marginRight: 10 }}
-							required
-							id="outlined-required"
-							label="Nome"
-							value={name}
-							onChange={(e) => setName(e.target.value.toString())}
+							label="Data de Nascimento"
+							value={new moment(birth)}
+							onChange={handleChange}
+							renderInput={(params) => <TextField {...params} />}
 						/>
-						<TextField
-							style={{ marginBottom: 10 , marginLeft:10 ,marginRight: 20 }}
-							disabled={register}
-							required
-							id="outlined-required"
-							label="E-Mail"
-							value={email}
-							onChange={(e) => setEmail(e.target.value.toString())}
-						/>
-					
-						<LocalizationProvider  dateAdapter={AdapterMoment} adapterLocale={moment.locale('pt-br')} >
-							<DatePicker
-								disabled={register}
-								label="Data de Nascimento"
-								value={new moment(birth)}
-								onChange={handleChange}
-								renderInput={(params) => <TextField {...params} />}
-							/>
-						</LocalizationProvider>
+					</LocalizationProvider>
 
 
 
-						<TextField
-							disabled={register}
-							style={{ margin: 10 }}
-							required
-							id="outlined-required"
-							label="Endereço"
-							value={street}
-							onChange={(e) => setStreet(e.target.value.toString())}
-						/>
+					<TextField
+						disabled={register}
+						style={{ margin: 10 }}
+						required
+						id="outlined-required"
+						label="Endereço"
+						value={street}
+						onChange={(e) => setStreet(e.target.value.toString())}
+					/>
 
-						<TextField
-							disabled={register}
-							style={{ margin: 10 }}
-							required
-							id="outlined-required"
-							label="Número"
-							value={number}
-							onChange={(e) => setNumber(e.target.value.toString())}
-						/>
+					<TextField
+						disabled={register}
+						style={{ margin: 10 }}
+						required
+						id="outlined-required"
+						label="Número"
+						value={number}
+						onChange={(e) => setNumber(e.target.value.toString())}
+					/>
 
 
-						<TextField
-							disabled={register}
-							style={{ margin: 10 }}
-							required
-							id="outlined-required"
-							label="Cidade"
-							value={city}
-							onChange={(e) => setCity(e.target.value.toString())}
-						/>
+					<TextField
+						disabled={register}
+						style={{ margin: 10 }}
+						required
+						id="outlined-required"
+						label="Cidade"
+						value={city}
+						onChange={(e) => setCity(e.target.value.toString())}
+					/>
 					<FormControl fullWidth style={{ margin: 10 }}>
 						<InputLabel id="select-label">Estado</InputLabel>
 						<Select
@@ -182,15 +189,15 @@ export default function AlterPatients(props) {
 							id="select"
 							value={state}
 							label="Estado"
-							onChange={(e)=> setState(e.target.value.toString())}
+							onChange={(e) => setState(e.target.value.toString())}
 						>
-							{brazilianStates.map((item,index)=>{
-								return(
+							{brazilianStates.map((item, index) => {
+								return (
 									<MenuItem key={index} value={item.value}>{item.label}</MenuItem>
 								)
 							})}
 						</Select>
-					</FormControl>	
+					</FormControl>
 
 
 					<TextField
@@ -206,7 +213,7 @@ export default function AlterPatients(props) {
 
 
 					<Button disabled={register} variant="contained" onClick={(e) => insertPatient()}> Alterar Paciente</Button>
-				</div>	
+				</div>
 			</FormControl>
 
 		</>

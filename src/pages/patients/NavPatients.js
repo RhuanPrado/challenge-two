@@ -1,7 +1,7 @@
 import React from "react";
 
-import { AppBar,Container, Toolbar } from "@mui/material";
-
+//import components
+import { AppBar, Container, Toolbar } from "@mui/material";
 import TypographyLogoMD from "../../components/TypografyLogoMD";
 import TypographyLogoXS from "../../components/TypografyLogoXS";
 import MenuButtons from "../../components/MenuButtons";
@@ -15,17 +15,18 @@ export default function NavPatients() {
 		<AppBar position="static">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
+
 					<TypographyLogoMD>
 						PATIENTS - CRUD
 					</TypographyLogoMD>
 
-					<MenuButtons/>
-					
+					<MenuButtons />
+
 					<TypographyLogoXS>
 						PATIENTS - CRUD
 					</TypographyLogoXS>
 
-					<NavButtons/>
+					<NavButtons />
 
 				</Toolbar>
 			</Container>
